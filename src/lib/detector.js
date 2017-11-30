@@ -3,7 +3,7 @@
  * @author mr.doob / http://mrdoob.com/
  */
 
-export default Detector = {
+export default  {
     
         canvas: !! window.CanvasRenderingContext2D,
         webgl: ( function () {

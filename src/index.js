@@ -46,7 +46,7 @@ class VRPlayer {
         }
 
         // three 3d settings
-        this._canvas;
+        this.canvas;
         this._camera;
         this._scene;
         this._geometry;
@@ -57,7 +57,7 @@ class VRPlayer {
         this._RAF; // requestAnimationFrame control
 
         // the video element
-        this._video;
+        this.video;
 
         // touchControl
         this._touchControl;
@@ -72,7 +72,7 @@ class VRPlayer {
                 event
             } = e;
 
-            if (event.target === this._canvas) {
+            if (event.target === this.canvas) {
                 let {
                     x,
                     y
@@ -99,21 +99,22 @@ class VRPlayer {
     }
     _init(settings) {
         let {
-            url,
             container,
             view,
             player
         } = settings;
-        player.url = url;
+        
 
         // overide default param using external param
         Object.assign(this._view, view);
         Object.assign(this._player, player);
+        this._container = container;
 
-        if (!url) {
+        if (!this._player.url) {
             console.warn("missing <url> field-- ", url);
             return;
         }
+
 
         this._initVideo();
         this._initCanvas();
@@ -156,7 +157,8 @@ class VRPlayer {
             }
         }
 
-        this._video = video;
+        this.video = video;
+
 
     }
     _initCanvas() {
@@ -191,7 +193,7 @@ class VRPlayer {
         geometry.scale(-1, 1, 1);
 
         // init the videoTexture
-        texture = new THREE.VideoTexture(this._video);
+        texture = new THREE.VideoTexture(this.video);
         texture.minFilter = THREE.LinearFilter;
         texture.format = THREE.RGBFormat;
 
@@ -210,7 +212,7 @@ class VRPlayer {
         renderer.setSize(width, height);
 
         // bind THREE canvas Element
-        this._canvas = renderer.domElement;
+        this.canvas = renderer.domElement;
         this._camera = camera;
         this._scene = scene;
         this._geometry = geometry;
@@ -218,6 +220,9 @@ class VRPlayer {
         this._material = material;
         this._mesh = mesh;
         this._renderer = renderer;
+
+
+        this._container && this._container.appendChild(renderer.domElement);
 
         this._RAF = this._animate();
 
@@ -248,7 +253,7 @@ class VRPlayer {
         camera.position.z = distance * Math.sin(phi) * Math.sin(theta);
         camera.lookAt(camera.target);
 
-        renderer.render(scene, camera);
+        renderer.render(this._scene, camera);
 
     }
     _bindSensor() {}
@@ -259,3 +264,5 @@ class VRPlayer {
         return detector.webgl && window.THREE;
     }
 }
+
+export default VRPlayer;
