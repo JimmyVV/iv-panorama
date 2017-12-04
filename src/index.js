@@ -255,7 +255,6 @@ class VRPlayer {
         this._mesh = mesh;
         this._renderer = renderer;
 
-
         this._container && this._container.appendChild(renderer.domElement);
 
         this._RAF = this._animate();
@@ -277,8 +276,6 @@ class VRPlayer {
         let phi,
             theta;
 
-        // remove the lat to the touch && orientation procedure
-        // lat = Math.max(-latRange, Math.min(latRange, lat)); // limit the latitude range
         phi = THREE.Math.degToRad(90 - lat);
         theta = THREE.Math.degToRad(lon);
 
@@ -290,16 +287,27 @@ class VRPlayer {
         renderer.render(this._scene, camera);
 
     }
+    /**
+     * the beta sensitivity range is 0.3 to 1
+     */
     set betaSens(value){
         this._view.betaSens = Math.max(0.3,Math.min(1,value));
     }
+    /**
+     * the alpha sensitivity range is 0.3 to 1.5
+     */
     set alphaSens(value){
         this._view.alphaSens = Math.max(0.3,Math.min(1.5,value));
     }
-
+    /**
+     * the touchY sensitivity range is 0.3 to 1.2
+     */
     set touchYSens(value){
         this._view.touchYSens = Math.max(0.3,Math.min(1.2,value));
     }
+    /**
+     * the touchX sensitivity range is 0.5 to 1.5
+     */
     set touchXSens(value){
         this._view.touchXSens = Math.max(0.5,Math.min(1.5,value));
     }
