@@ -26,8 +26,10 @@ class VRPlayer {
             touch: true,
             orientation: true,
             latRange: 85,
-            touchYSens: 0.3,
-            touchXSens: 0.5
+            touchYSens: 0.3, // [0.3,1.2]
+            touchXSens: 0.5, // [0.5,1.5]
+            betaSens: 0.8, // the range is between 0.3 and 1, move vertically ( portrait )
+            alphaSens: 0.8 // the range is between 0.3 and 1.4, move horizontally ( landscape )
         }
 
         this._player = {
@@ -61,8 +63,40 @@ class VRPlayer {
 
         // touchControl
         this._touchControl;
+        // orientationControl 
+        this._orient;
 
         this._init(settings);
+    }
+    _bindOrientation() {
+        this._orient = new OrientationControl();
+
+        this._orient.move(e => {
+            let {
+                event,
+                delta
+            } = e, {
+                beta, // for latitude
+                alpha // for lontitude
+            } = delta, {
+                lat,
+                lon,
+                latRange
+            } = this._3D, {
+                betaSens,
+                alphaSens
+            } = this._view;
+
+            lat += beta * betaSens;
+            lon += alpha * alphaSens;
+
+            this._3D.lat = Math.max(-latRange, Math.min(latRange, lat));
+            this._3D.lon = lon;
+
+
+        })
+
+
     }
     _bindTouch() {
         this._touchControl = new TouchFinger();
@@ -88,7 +122,7 @@ class VRPlayer {
                 lat += y * touchYSens;
                 lon += x * touchXSens;
 
-                this._3D.lat = Math.max(-latRange,Math.min(latRange,lat));
+                this._3D.lat = Math.max(-latRange, Math.min(latRange, lat));
                 this._3D.lon = lon;
 
             }
@@ -103,7 +137,7 @@ class VRPlayer {
             view,
             player
         } = settings;
-        
+
 
         // overide default param using external param
         Object.assign(this._view, view);
@@ -124,7 +158,7 @@ class VRPlayer {
         }
 
         if (this._view.orientation) {
-            this._bindSensor();
+            this._bindOrientation();
         }
     }
     _initVideo() {
@@ -256,11 +290,23 @@ class VRPlayer {
         renderer.render(this._scene, camera);
 
     }
-    _bindSensor() {}
+    set betaSens(value){
+        this._view.betaSens = Math.max(0.3,Math.min(1,value));
+    }
+    set alphaSens(value){
+        this._view.alphaSens = Math.max(0.3,Math.min(1.5,value));
+    }
+
+    set touchYSens(value){
+        this._view.touchYSens = Math.max(0.3,Math.min(1.2,value));
+    }
+    set touchXSens(value){
+        this._view.touchXSens = Math.max(0.5,Math.min(1.5,value));
+    }
     get check() {
         return detector.webgl && window.THREE;
     }
-    static isSupported(){
+    static isSupported() {
         return detector.webgl && window.THREE;
     }
 }

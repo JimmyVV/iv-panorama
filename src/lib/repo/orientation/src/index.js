@@ -2,6 +2,12 @@ import Mitt from 'mitt';
 
 class OrientationControl {
     constructor() {
+
+        if(!this.isSupport){
+            console.warn('Your browser don\'t support orientation API ');
+            return;
+        }
+
         window.addEventListener('deviceorientation', this._control.bind(this), false);
 
         this._emitter = new Mitt();
