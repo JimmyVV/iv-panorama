@@ -48,7 +48,7 @@ class VRPlayer {
         }
 
         // three 3d settings
-        this.canvas;
+        this._canvas;
         this._camera;
         this._scene;
         this._geometry;
@@ -59,7 +59,7 @@ class VRPlayer {
         this._RAF; // requestAnimationFrame control
 
         // the video element
-        this.video;
+        this._video;
 
         // touchControl
         this._touchControl;
@@ -96,7 +96,6 @@ class VRPlayer {
 
         })
 
-
     }
     _bindTouch() {
         this._touchControl = new TouchFinger();
@@ -106,7 +105,7 @@ class VRPlayer {
                 event
             } = e;
 
-            if (event.target === this.canvas) {
+            if (event.target === this._canvas) {
                 let {
                     x,
                     y
@@ -191,7 +190,7 @@ class VRPlayer {
             }
         }
 
-        this.video = video;
+        this._video = video;
 
 
     }
@@ -227,7 +226,7 @@ class VRPlayer {
         geometry.scale(-1, 1, 1);
 
         // init the videoTexture
-        texture = new THREE.VideoTexture(this.video);
+        texture = new THREE.VideoTexture(this._video);
         texture.minFilter = THREE.LinearFilter;
         texture.format = THREE.RGBFormat;
 
@@ -246,7 +245,7 @@ class VRPlayer {
         renderer.setSize(width, height);
 
         // bind THREE canvas Element
-        this.canvas = renderer.domElement;
+        this._canvas = renderer.domElement;
         this._camera = camera;
         this._scene = scene;
         this._geometry = geometry;
@@ -287,6 +286,48 @@ class VRPlayer {
         renderer.render(this._scene, camera);
 
     }
+
+    /**
+     * @description if you wanna control the panorama rotation yourself 
+     *              just directly set the lat and lon values
+     */
+    set lat(value){
+        let latRange = this._3D.latRange;
+        this._3D.lat = Math.max(-latRange, Math.min(latRange, value));
+    }
+    set lon(value){
+        this._3D.lon = lon;
+    }
+
+    get canvas(){
+        return this._canvas;
+    }
+    get video(){
+        return this._video;
+    }
+    /**
+     * @description add the video action, like:
+     *              play, pause, change the video.src
+     */
+    play(){
+        this._video && this._video.play();
+    }
+    pause(){
+        this._video && this._video.pause();
+    }
+    set src(url){
+        if(this._video) this._video.src = url;
+    }
+
+    on(event,fn){
+        this._video && this._video.addEventListener(event,fn,false);
+    }
+    addEventListener(...args){
+        this.on(...args);
+    }
+    bind(...args){
+        this.on(...args);
+    }
     /**
      * the beta sensitivity range is 0.3 to 1
      */
@@ -306,10 +347,10 @@ class VRPlayer {
         this._view.touchYSens = Math.max(0.3,Math.min(1.2,value));
     }
     /**
-     * the touchX sensitivity range is 0.5 to 1.5
+     * the touchX sensitivity range is 0.3 to 1.5
      */
     set touchXSens(value){
-        this._view.touchXSens = Math.max(0.5,Math.min(1.5,value));
+        this._view.touchXSens = Math.max(0.3,Math.min(1.5,value));
     }
     get check() {
         return detector.webgl && window.THREE;
