@@ -5,7 +5,7 @@ const COMPILE = (process.env.NODE_ENV === 'compile');
 
 let config = {
     entry: {
-        index: path.join(__dirname,'./test/index')
+        index: path.join(__dirname,'./example/index')
     },
     output: {
         path: path.join(__dirname, './dev/'),

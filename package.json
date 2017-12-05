@@ -1,11 +1,14 @@
 {
-  "name": "vr-repo",
+  "name": "iv-panorama",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "http-server . -c-1 & webpack -w -p"
   },
-  "author": "",
+  "dependencies": {
+    "mitt": "^1.1.2"
+  },
+  "author": "jimmytian villainhr",
   "license": "ISC"
 }
