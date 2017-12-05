@@ -54,5 +54,5 @@ new VRPlayer({
 iv-panorama is under the Apache License. See the [LICENSE][2] file for details.
 
 
-  [1]: ./tree/master/doc/api.md
-  [2]: ./tree/master/LICENSE
+  [1]: tree/master/doc/api.md
+  [2]: tree/master/LICENSE
