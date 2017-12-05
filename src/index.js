@@ -29,7 +29,8 @@ class VRPlayer {
             touchYSens: 0.3, // [0.3,1.2]
             touchXSens: 0.5, // [0.5,1.5]
             betaSens: 0.8, // the range is between 0.3 and 1, move vertically ( portrait )
-            alphaSens: 0.8 // the range is between 0.3 and 1.4, move horizontally ( landscape )
+            gammaSens: 0.8, // the range is between 0.3 and 1.4, move horizontally ( landscape )
+            alphaSens:0.8
         }
 
         this._player = {
@@ -77,18 +78,19 @@ class VRPlayer {
                 delta
             } = e, {
                 beta, // for latitude
-                alpha // for lontitude
+                gamma,// for lontitude
+                alpha
             } = delta, {
                 lat,
                 lon,
                 latRange
             } = this._3D, {
                 betaSens,
-                alphaSens
+                gammaSens
             } = this._view;
 
-            lat += beta * betaSens;
-            lon += alpha * alphaSens;
+            lat -= beta * betaSens;
+            lon += gamma * gammaSens;
 
             this._3D.lat = Math.max(-latRange, Math.min(latRange, lat));
             this._3D.lon = lon;
@@ -276,7 +278,7 @@ class VRPlayer {
             theta;
 
         phi = THREE.Math.degToRad(90 - lat);
-        theta = THREE.Math.degToRad(lon);
+        theta = THREE.Math.degToRad(-lon);
 
         camera.position.x = distance * Math.sin(phi) * Math.cos(theta);
         camera.position.y = distance * Math.cos(phi);
@@ -335,10 +337,10 @@ class VRPlayer {
         this._view.betaSens = Math.max(0.3,Math.min(1,value));
     }
     /**
-     * the alpha sensitivity range is 0.3 to 1.5
+     * the gamma sensitivity range is 0.3 to 1.5
      */
-    set alphaSens(value){
-        this._view.alphaSens = Math.max(0.3,Math.min(1.5,value));
+    set gammaSens(value){
+        this._view.gammaSens = Math.max(0.3,Math.min(1.5,value));
     }
     /**
      * the touchY sensitivity range is 0.3 to 1.2

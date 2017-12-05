@@ -10,6 +10,11 @@ window.onload = function () {
         container:document.getElementById('container')
     });
 
+    panorama.canvas.addEventListener('click',function(){
+        console.log('play');
+        panorama.play();
+    },false);
+
 
 
     /**
