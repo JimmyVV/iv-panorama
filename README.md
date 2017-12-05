@@ -2,6 +2,7 @@
 
 ![Travis](https://img.shields.io/travis/rust-lang/rust.svg)
 ![license](https://img.shields.io/badge/license-APACHE-blue.svg)
+![这里是各种badge](badge的链接)
 
 现在随着宽带的降费提速，用户对于需要高网速、高流量的应用适应越来越强。现在 VR 也随着设备的普及慢慢进入大众，但是一个在线的 VR 应用对流量的要求也远远超过目前的运营商能提供的网速上限，特别是一些 VR 视频大户，常常推出的视频就是 10K 的大小。
 
@@ -44,6 +45,20 @@ new VRPlayer({
     });
 ```
 
+### demo 预览
+
+下载:
+
+```
+tnpm install http-server -g
+```
+
+然后，直接运行：
+
+```
+tnpm run compile
+```
+
 ## 文档
 
 [API][1]
@@ -54,5 +69,5 @@ new VRPlayer({
 iv-panorama is under the Apache License. See the [LICENSE][2] file for details.
 
 
-  [1]: http://git.code.oa.com/jimmytian/ivweb-panaorama-player/blob/master/doc/api.md
-  [2]: http://git.code.oa.com/jimmytian/ivweb-panaorama-player/blob/master/LICENSE
+  [1]: ./doc/api.md
+  [2]: ./LICENSE

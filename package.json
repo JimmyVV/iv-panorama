@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "http-server . -c-1 & webpack -w -p"
+    "start": "http-server . -c-1 & webpack -w -p",
+    "compile":"http-server ./example -c-1"
   },
   "dependencies": {
     "mitt": "^1.1.2"
