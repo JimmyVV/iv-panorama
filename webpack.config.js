@@ -5,10 +5,10 @@ const COMPILE = (process.env.NODE_ENV === 'compile');
 
 let config = {
     entry: {
-        index: path.join(__dirname,'./example/index')
+        index: path.join(__dirname,'./test/index')
     },
     output: {
-        path: path.join(__dirname, './dev/'),
+        path: path.join(__dirname, './example/'),
         filename: '[name].js'
     },
     module: {
