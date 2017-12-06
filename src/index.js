@@ -297,10 +297,15 @@ class VRPlayer {
         let latRange = this._3D.latRange;
         this._3D.lat = Math.max(-latRange, Math.min(latRange, value));
     }
+    get lat(){
+        return this._3D.lat;
+    }
     set lon(value){
         this._3D.lon = lon;
     }
-
+    get lon(){
+        return this._3D.lon;
+    }
     get canvas(){
         return this._canvas;
     }
@@ -320,6 +325,9 @@ class VRPlayer {
     set src(url){
         if(this._video) this._video.src = url;
     }
+    get src(){
+        return this._video.src || '';
+    }
 
     on(event,fn){
         this._video && this._video.addEventListener(event,fn,false);
@@ -336,11 +344,17 @@ class VRPlayer {
     set betaSens(value){
         this._view.betaSens = Math.max(0.3,Math.min(1,value));
     }
+    get betaSens(){
+        return this._view.betaSens;
+    }
     /**
      * the gamma sensitivity range is 0.3 to 1.5
      */
     set gammaSens(value){
         this._view.gammaSens = Math.max(0.3,Math.min(1.5,value));
+    }
+    get gammaSens(){
+        return this._view.gammaSens;
     }
     /**
      * the touchY sensitivity range is 0.3 to 1.2
@@ -348,11 +362,17 @@ class VRPlayer {
     set touchYSens(value){
         this._view.touchYSens = Math.max(0.3,Math.min(1.2,value));
     }
+    get touchYSens(){
+        return this._view.touchYSens;
+    }
     /**
      * the touchX sensitivity range is 0.3 to 1.5
      */
     set touchXSens(value){
         this._view.touchXSens = Math.max(0.3,Math.min(1.5,value));
+    }
+    get touchXSens(){
+        return this._view.touchXSens;
     }
     get check() {
         return detector.webgl && window.THREE;
