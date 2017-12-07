@@ -34,12 +34,20 @@ class VRPlayer {
         }
 
         this._player = {
+            url:'',
             crossOrigin: 'anonymous',
             muted: false,
             loop: true,
             autoplay: true,
             x5: ['webkit-playsinline', 'playsinline']
         }
+
+        this._image = {
+            url:'',
+            crossOrigin: 'anonymous',
+        }
+
+        this._mode = 'video';
 
         this._3D = {
             lon: 0, //  correspond to x
@@ -136,22 +144,29 @@ class VRPlayer {
         let {
             container,
             view,
+            image,
             player
         } = settings;
 
-
+        if(player){
+            Object.assign(this._player, player);
+            this._mode = 'video';
+        }else if(image){
+            Object.assign(this._image, image);
+            this._mode = 'image';
+        }
         // overide default param using external param
         Object.assign(this._view, view);
-        Object.assign(this._player, player);
+        
         this._container = container;
 
-        if (!this._player.url) {
+        if (!this._player.url && !this._image.url) {
             console.warn("missing <url> field-- ", url);
             return;
         }
 
-
-        this._initVideo();
+        this._mode === 'video'?this._initVideo():this._initImage();
+        
         this._initCanvas();
 
         if (this._view.touch) {
@@ -161,6 +176,13 @@ class VRPlayer {
         if (this._view.orientation) {
             this._bindOrientation();
         }
+    }
+    _initImage(){
+        let {url} = this._image;
+
+        let image = document.createElement('image');
+
+        image.src = url;
     }
     _initVideo() {
         let {
@@ -226,7 +248,7 @@ class VRPlayer {
         // add the geometry
         geometry = new THREE.SphereBufferGeometry(radius, widthSeg, heightSeg);
         geometry.scale(-1, 1, 1);
-
+    
         // init the videoTexture
         texture = new THREE.VideoTexture(this._video);
         texture.minFilter = THREE.LinearFilter;
