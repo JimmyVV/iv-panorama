@@ -28,7 +28,6 @@ class TouchDetect {
 
         let touchprop = this._touchprop;
 
-        e.preventDefault();
 
         switch (type) {
             case "touchstart":

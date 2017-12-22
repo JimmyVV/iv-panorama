@@ -42,7 +42,7 @@ class VRPlayer {
             x5: ['webkit-playsinline', 'playsinline']
         }
 
-        this._image = {
+        this._picture = {
             url:'',
             crossOrigin: 'anonymous',
         }
@@ -62,6 +62,7 @@ class VRPlayer {
         this._scene;
         this._geometry;
         this._texture;
+        this._textureLoader;
         this._material;
         this._mesh;
         this._renderer;
@@ -69,6 +70,7 @@ class VRPlayer {
 
         // the video element
         this._video;
+        this._image;
 
         // touchControl
         this._touchControl;
@@ -148,11 +150,12 @@ class VRPlayer {
             player
         } = settings;
 
+        // VRplayer only accept one of player and image params
         if(player){
             Object.assign(this._player, player);
             this._mode = 'video';
         }else if(image){
-            Object.assign(this._image, image);
+            Object.assign(this._picture, image);
             this._mode = 'image';
         }
         // overide default param using external param
@@ -160,12 +163,12 @@ class VRPlayer {
         
         this._container = container;
 
-        if (!this._player.url && !this._image.url) {
+        if (!this._player.url && !this._picture.url) {
             console.warn("missing <url> field-- ", url);
             return;
         }
 
-        this._mode === 'video'?this._initVideo():this._initImage();
+        this._mode === 'video' && this._initVideo();
         
         this._initCanvas();
 
@@ -176,13 +179,6 @@ class VRPlayer {
         if (this._view.orientation) {
             this._bindOrientation();
         }
-    }
-    _initImage(){
-        let {url} = this._image;
-
-        let image = document.createElement('image');
-
-        image.src = url;
     }
     _initVideo() {
         let {
@@ -225,6 +221,7 @@ class VRPlayer {
             texture,
             material,
             mesh,
+            textureLoader,
             renderer;
 
         let {
@@ -250,9 +247,16 @@ class VRPlayer {
         geometry.scale(-1, 1, 1);
     
         // init the videoTexture
-        texture = new THREE.VideoTexture(this._video);
+        if(this._mode === 'video'){
+            texture = new THREE.VideoTexture(this._video);
+        }else{
+            textureLoader = new THREE.TextureLoader();
+            texture = textureLoader.load(this._picture.url);
+            
+        }
+
         texture.minFilter = THREE.LinearFilter;
-        texture.format = THREE.RGBFormat;
+        texture.format = THREE.RGBFormat;  
 
         // combine geometry with texture
         material = new THREE.MeshBasicMaterial({
@@ -274,6 +278,7 @@ class VRPlayer {
         this._scene = scene;
         this._geometry = geometry;
         this._texture = texture;
+        this._textureLoader = textureLoader;
         this._material = material;
         this._mesh = mesh;
         this._renderer = renderer;
@@ -345,10 +350,14 @@ class VRPlayer {
         this._video && this._video.pause();
     }
     set src(url){
-        if(this._video) this._video.src = url;
-    }
-    get src(){
-        return this._video.src || '';
+        if(this._mode === 'video') 
+            this._video.src = url;
+        else 
+            this._textureLoader.load(url,texture=>{
+                texture.minFilter = THREE.LinearFilter;
+                texture.format = THREE.RGBFormat;  
+                this._material.map = texture;
+            });
     }
 
     on(event,fn){
