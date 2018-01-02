@@ -44,6 +44,19 @@ new VRPlayer({
     });
 ```
 
+如果想预览全景图片，则直接传入 image 参数：
+
+```
+let panorama = new VRPlayer({
+    image: {
+            url: './banner.png'
+        },
+        container:document.getElementById('container')
+    });
+```
+
+相关的资源，在 github 仓库的 example 文件夹里面。
+
 ### demo 预览
 
 下载:
