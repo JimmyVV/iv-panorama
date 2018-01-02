@@ -34,7 +34,7 @@ npm install iv-panorama
 通过 `import` 导入模块，在实例化时，传入相关的参数定义。
 
 ```
-import VRPlayer from '../src';
+import VRPlayer from 'iv-panorama';
 
 new VRPlayer({
         player: {
