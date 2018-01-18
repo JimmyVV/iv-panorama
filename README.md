@@ -80,5 +80,5 @@ tnpm run compile
 
 iv-panorama is under the Apache License. See the [LICENSE][2] file for details.
 
- [1]: http://git.code.oa.com/ivweb/iv-panorama/blob/master/doc/api.md
- [2]: http://git.code.oa.com/ivweb/iv-panorama/blob/master/LICENSE
+ [1]: https://github.com/ivweb/iv-panorama/blob/master/doc/api.md
+ [2]: https://github.com/ivweb/iv-panorama/blob/master/LICENSE
